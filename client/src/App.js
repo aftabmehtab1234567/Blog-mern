@@ -10,13 +10,12 @@ function App() {
   return (
     <BrowserRouter>
       <>
-    <Header/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Projects" element={<Projects />} />
         </Routes>
-        <Footer /> {/* Place the Footer component outside the Routes */}
+     
       </>
     </BrowserRouter>
   );

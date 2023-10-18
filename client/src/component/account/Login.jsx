@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { signup, login } from '../../services/api';
-
+import { useNavigate } from 'react-router-dom';
 export default function Login() {
+  const navigate=useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     username: '',
@@ -31,6 +32,7 @@ export default function Login() {
         
       } else {
         await login(formData);
+        navigate('/projects');
       }
     } catch (error) {
       console.error('API call error:', error);

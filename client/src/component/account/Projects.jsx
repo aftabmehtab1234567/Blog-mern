@@ -1,7 +1,10 @@
 import React from 'react';
+import Header from './Header';
 
 export default function Projects() {
   return (
+   <>
+   <Header/>
     <div>
       <div
         className="bg-image d-flex justify-content-center align-items-center background"
@@ -26,5 +29,6 @@ export default function Projects() {
         </div>
       </div>
     </div>
+</>
   );
 }
