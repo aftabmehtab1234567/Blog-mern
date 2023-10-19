@@ -67,9 +67,11 @@ export async function handleAction1(req, res) {
     // If the password is correct, generate a JWT token
 const secretKey = 'your_secret_key'; // Replace with your secret key
 const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
-
+res.header('Access-Control-Allow-Credentials', true);
+// Set the token as a cookie with httpOnly and maxAge options
 // Set the token as a cookie with httpOnly and maxAge options
 res.cookie('token', token, { httpOnly: true, maxAge: 360000 });
+
 
 // Send the token in the response
 res.status(200).json({ token, user });

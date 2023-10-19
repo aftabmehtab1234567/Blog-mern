@@ -5,7 +5,7 @@ export default function Projects() {
   return (
    <>
    <Header/>
-    <div>
+    <div> 
       <div
         className="bg-image d-flex justify-content-center align-items-center background"
         style={{

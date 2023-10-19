@@ -24,21 +24,29 @@ export default function Login() {
       setFormData({ ...formData, [name]: value });
     }
   };
-
+  const setCookie = (name, value, days) => {
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    const expires = `expires=${date.toUTCString()}`;
+    document.cookie = `${name}=${value};${expires};path=/`;
+  };
   const handleActions = async () => {
     try {
       if (isCreatingAccount) {
         await signup(formData);
         
       } else {
-        await login(formData);
+       const response= await login(formData);
+       console.log(response);
+        setCookie('JWT', 'INSERTED COOKIE', 30);
         navigate('/projects');
       }
     } catch (error) {
       console.error('API call error:', error);
     }
   };
-
+ // Function to set a cookie
+ 
   return (
     <section className="h-100 gradient-form" style={{ backgroundColor: '#eee' }}>
       <div className="container py-5 h-100">
