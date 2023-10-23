@@ -34,17 +34,25 @@ export default function Login() {
     try {
       if (isCreatingAccount) {
         await signup(formData);
-        
+        // Handle successful signup if needed
       } else {
-       const response= await login(formData);
+        const response = await login(formData);
+        const { token } = response; // Assuming your API response provides a 'token' property
        console.log(response);
-        setCookie('JWT', 'INSERTED COOKIE', 30);
-        navigate('/projects');
+        if (token) {
+          // Set the JWT token in a cookie
+          setCookie('JWT', token, 30);
+          // Navigate to the 'projects' page
+          navigate('/projects');
+        } else {
+          // Handle login error
+        }
       }
     } catch (error) {
       console.error('API call error:', error);
     }
   };
+  
  // Function to set a cookie
  
   return (
