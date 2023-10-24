@@ -39,13 +39,13 @@ export default function Login() {
       } else {
         const response = await login(formData);
   
-        // Check if a token is present in the response
         if (response.data && response.data.token) {
+          // Token is present in the response
           const token = response.data.token;
           console.log(token);
           // Set the JWT token in a cookie without validation
           setCookie('JWT', token, 30);
-  
+          
           // Navigate to the 'Projects' page
           navigate('/Projects');
         } else {
