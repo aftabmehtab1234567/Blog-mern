@@ -37,27 +37,21 @@ export default function Login() {
         await signup(formData);
         // Handle successful signup if needed
       } else {
-        const response = await login(formData);
+        // Perform login without checking the token
+        const response= await login(formData);
+       
+        const token = response.data.token;
+        console.log(token);
+        // Set the JWT token in a cookie without validation
+        setCookie('JWT',token , 30);
   
-        if (response.data && response.data.token) {
-          // Token is present in the response
-          const token = response.data.token;
-          console.log(token);
-          // Set the JWT token in a cookie without validation
-          setCookie('JWT', token, 30);
-          
-          // Navigate to the 'Projects' page
-          navigate('/Projects');
-        } else {
-          // No token present, redirect to the sign-in page
-          navigate('/Login');
-        }
+        // Navigate to the 'Projects' page
+        navigate('/Projects');
       }
     } catch (error) {
       console.error('API call error:', error);
     }
   };
-  
   
   
  // Function to set a cookie
