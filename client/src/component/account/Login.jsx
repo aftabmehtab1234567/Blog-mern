@@ -30,6 +30,7 @@ export default function Login() {
     const expires = `expires=${date.toUTCString()}`;
     document.cookie = `${name}=${value};${expires};path=/`;
   };
+  
   const handleActions = async () => {
     try {
       if (isCreatingAccount) {
@@ -37,21 +38,27 @@ export default function Login() {
         // Handle successful signup if needed
       } else {
         const response = await login(formData);
-        const { token } = response; // Assuming your API response provides a 'token' property
-       console.log(response);
-        if (token) {
-          // Set the JWT token in a cookie
+  
+        // Check if a token is present in the response
+        if (response.data && response.data.token) {
+          const token = response.data.token;
+          console.log(token);
+          // Set the JWT token in a cookie without validation
           setCookie('JWT', token, 30);
-          // Navigate to the 'projects' page
-          navigate('/projects');
+  
+          // Navigate to the 'Projects' page
+          navigate('/Projects');
         } else {
-          // Handle login error
+          // No token present, redirect to the sign-in page
+          navigate('/Login');
         }
       }
     } catch (error) {
       console.error('API call error:', error);
     }
   };
+  
+  
   
  // Function to set a cookie
  

@@ -23,11 +23,9 @@ export const signup = async (data) => {
   }
 };
 export const login = async (userdata) => {
-    try {console.log(userdata);
+    try {
       const response = await axios.post(`${API_URL}/login`, userdata);
-     console.log(
-      response
-     );
+    console.log(response);
       return response;
     } catch (error) {
       console.error('Error while logging in:', error);

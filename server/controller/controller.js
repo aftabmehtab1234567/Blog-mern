@@ -47,7 +47,7 @@ export async function handleAction(req, res) {
 
 export async function handleAction1(req, res) {
   const { email, password } = req.body;
-
+ 
   try {
     // Check if the user with the provided email exists in the database
     const user = await User.findOne({ email });
@@ -58,7 +58,7 @@ export async function handleAction1(req, res) {
 
     // Compare the provided password with the hashed password
     const passwordMatch = await bcrypt.compare(password, user.password);
-
+    
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
