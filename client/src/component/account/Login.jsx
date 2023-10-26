@@ -12,6 +12,7 @@ export default function Login() {
 
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
+
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     if (type === 'file') {
@@ -35,11 +36,12 @@ export default function Login() {
     try {
       if (isCreatingAccount) {
         await signup(formData);
+       
         // Handle successful signup if needed
       } else {
         // Perform login without checking the token
         const response= await login(formData);
-       
+        console.log(response);
         const token = response.data.token;
         console.log(token);
         // Set the JWT token in a cookie without validation

@@ -47,7 +47,7 @@ export async function handleAction(req, res) {
 
 export async function handleAction1(req, res) {
   const { email, password } = req.body;
- 
+
   try {
     // Check if the user with the provided email exists in the database
     const user = await User.findOne({ email });
@@ -58,26 +58,33 @@ export async function handleAction1(req, res) {
 
     // Compare the provided password with the hashed password
     const passwordMatch = await bcrypt.compare(password, user.password);
-    
+
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     // If the password is correct, generate a JWT token
-    // If the password is correct, generate a JWT token
-const secretKey = 'your_secret_key'; // Replace with your secret key
-const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
-res.header('Access-Control-Allow-Credentials', true);
-// Set the token as a cookie with httpOnly and maxAge options
-// Set the token as a cookie with httpOnly and maxAge options
-res.cookie('token', token, { httpOnly: true, maxAge: 360000 });
+    const secretKey = 'your_secret_key'; // Replace with your secret key
+    const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+    res.header('Access-Control-Allow-Credentials', true);
 
+    // Set the token as a cookie with httpOnly and maxAge options
+    res.cookie('token', token, { httpOnly: true, maxAge: 360000 });
 
-// Send the token in the response
-res.status(200).json({ token, user });
+    // Include the image in the user data
+    const userData = {
+      _id: user._id,
+      email: user.email,
+      // Add other user properties you want to include
+      image: user.image, // Assuming user.image is the image URL
+    };
+
+    // Send the token and user data in the response
+    res.status(200).json({ token, user: userData });
 
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+

@@ -1,7 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Header() {
+const Header = () => {
+  const handleLogout = () => {
+    // Clear the JWT token from local storage when the user logs out.
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+
+    // Redirect to the login page after logout.
+    window.location.href = '/Login'; // Replace with your actual login page URL
+  };
+
   return (
     // Navbar
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -37,10 +45,14 @@ export default function Header() {
               <Link to="/Login" className="nav-link">Login</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Logout</a>
+              <a className="nav-link" href="#" onClick={handleLogout}>
+                Logout
+              </a>
             </li>
             <li className="nav-item">
-              <Link to="/Projects" className="nav-link">Projects</Link>
+              <Link to="/Projects" className="nav-link">
+                Projects
+              </Link>
             </li>
           </ul>
           {/* Left links */}
@@ -63,20 +75,28 @@ export default function Header() {
               aria-expanded="false"
             >
               <i className="fas fa-bell"></i>
-              <span className="badge rounded-pill badge-notification bg-danger">1</span>
+              <span className="badge rounded-pill badge-notification bg-danger">
+                1
+              </span>
             </a>
             <ul
               className="dropdown-menu dropdown-menu-end"
               aria-labelledby="navbarDropdownMenuLink"
             >
               <li>
-                <a className="dropdown-item" href="#">Some news</a>
+                <a className="dropdown-item" href="#">
+                  Some news
+                </a>
               </li>
               <li>
-                <a className="dropdown-item" href="#">Another news</a>
+                <a className="dropdown-item" href="#">
+                  Another news
+                </a>
               </li>
               <li>
-                <a className="dropdown-item" href="#">Something else here</a>
+                <a className="dropdown-item" href="#">
+                  Something else here
+                </a>
               </li>
             </ul>
           </div>
@@ -103,13 +123,19 @@ export default function Header() {
               aria-labelledby="navbarDropdownMenuAvatar"
             >
               <li>
-                <a className="dropdown-item" href="#">My profile</a>
+                <a className="dropdown-item" href="#">
+                  My profile
+                </a>
               </li>
               <li>
-                <a className="dropdown-item" href="#">Settings</a>
+                <a className="dropdown-item" href="#">
+                  Settings
+                </a>
               </li>
               <li>
-                <a className="dropdown-item" href="#">Logout</a>
+                <a className="dropdown-item" href="#">
+                  Logout
+                </a>
               </li>
             </ul>
           </div>
@@ -118,6 +144,7 @@ export default function Header() {
       </div>
       {/* Container wrapper */}
     </nav>
-    // Navbar
   );
-}
+};
+
+export default Header;
