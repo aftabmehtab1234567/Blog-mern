@@ -6,10 +6,11 @@ import Projects from './component/account/Projects';
 import Footer from './component/account/Footer'; // Import Footer
 import Header from './component/account/Header';
 import Usercontext from './Context/context';
+import { AuthProvider } from './Context/Contextprovider';
 
 function App() {
   return (
-    <Usercontext.Provider> 
+    <AuthProvider> 
       <BrowserRouter>
         <>
           <Routes>
@@ -19,7 +20,7 @@ function App() {
           </Routes>
         </>
       </BrowserRouter>
-    </Usercontext.Provider>
+    </AuthProvider>
   );
 }
 

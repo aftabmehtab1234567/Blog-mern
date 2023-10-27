@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-
+import { AuthContext, AuthProvider } from '../../Context/Contextprovider';
 const Header = () => {
+  const {image}=useContext(AuthContext) // Access token and imageData from the context
+  if(image){
+    console.log(image);
+  }
   const handleLogout = () => {
-    // Clear the JWT token from local storage when the user logs out.
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-
+    // Remove the JWT token from localStorage
+    localStorage.removeItem('JWT');
+  
     // Redirect to the login page after logout.
     window.location.href = '/Login'; // Replace with your actual login page URL
   };
+  
 
   return (
     // Navbar
@@ -111,12 +116,12 @@ const Header = () => {
               aria-expanded="false"
             >
               <img
-                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                className="rounded-circle"
-                height="25"
-                alt="Black and White Portrait of a Man"
-                loading="lazy"
-              />
+  src={image} // Use the image URL fetched from the context
+  className="rounded-circle"
+  height="25"
+  alt="User Avatar" // Provide an appropriate alt text
+  loading="lazy"
+/>
             </a>
             <ul
               className="dropdown-menu dropdown-menu-end"

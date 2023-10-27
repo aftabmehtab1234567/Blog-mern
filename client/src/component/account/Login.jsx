@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { signup, login } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Context/Contextprovider';
 export default function Login() {
   const navigate=useNavigate();
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ export default function Login() {
   });
 
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
+  const {setImage}=useContext(AuthContext)
 
 
   const handleChange = (e) => {
@@ -25,27 +27,22 @@ export default function Login() {
       setFormData({ ...formData, [name]: value });
     }
   };
-  const setCookie = (name, value, days) => {
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    const expires = `expires=${date.toUTCString()}`;
-    document.cookie = `${name}=${value};${expires};path=/`;
-  };
+
   
   const handleActions = async () => {
     try {
       if (isCreatingAccount) {
         await signup(formData);
-       
         // Handle successful signup if needed
       } else {
         // Perform login without checking the token
-        const response= await login(formData);
+        const response = await login(formData);
         console.log(response);
+        setImage(response.data.user.image)
         const token = response.data.token;
         console.log(token);
-        // Set the JWT token in a cookie without validation
-        setCookie('JWT',token , 30);
+        // Set the JWT token in localStorage
+        localStorage.setItem('JWT', token);
   
         // Navigate to the 'Projects' page
         navigate('/Projects');
@@ -54,7 +51,6 @@ export default function Login() {
       console.error('API call error:', error);
     }
   };
-  
   
  // Function to set a cookie
  
