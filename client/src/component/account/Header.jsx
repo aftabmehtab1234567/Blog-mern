@@ -1,15 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext, AuthProvider } from '../../Context/Contextprovider';
+import { AuthContext } from '../../Context/Contextprovider';
+
 const Header = () => {
-  const {image}=useContext(AuthContext) // Access token and imageData from the context
-  if(image){
-    console.log(image);
-  }
+  const { image } = useContext(AuthContext);
+  const [imageUrl, setImageUrl] = useState('');
+
+  useEffect(() => {
+    if (image) {console.log(image);
+      // Fetch the image URL based on the 'image' data from your context
+      // Replace '/api/getImage' with the actual endpoint to fetch the image URL
+      fetch('http://localhost:8000/getImage')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+       
+        })
+        .then((data) => {
+          setImageUrl(data.imageUrl);
+        })
+        
+        .catch((error) => console.error('Error fetching image:', error));
+    }
+  }, [image]); // Only fetch the image when 'image' changes
+
   const handleLogout = () => {
     // Remove the JWT token from localStorage
     localStorage.removeItem('JWT');
-  
+
     // Redirect to the login page after logout.
     window.location.href = '/Login'; // Replace with your actual login page URL
   };
@@ -115,11 +135,11 @@ const Header = () => {
               data-mdb-toggle="dropdown"
               aria-expanded="false"
             >
-              <img
-  src={image} // Use the image URL fetched from the context
+           <img
+  src={imageUrl}
   className="rounded-circle"
   height="25"
-  alt="User Avatar" // Provide an appropriate alt text
+  alt="User Avatar"
   loading="lazy"
 />
             </a>

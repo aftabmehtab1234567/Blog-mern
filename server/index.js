@@ -9,6 +9,7 @@ const app = express();
 // Use the router for routing
 
 connectToDatabase(); // Use the imported function to establish the database connection
+app.use('/upload', express.static('./public/upload/'));
 
 const Port = 8000;
 app.use(cors());
