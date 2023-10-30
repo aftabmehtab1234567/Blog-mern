@@ -14,7 +14,8 @@ router.post('/signup', upload.single('file'), handleAction);
 router.post('/login', handleAction1);
 router.get('/getImage', (req, res) => {
     
-    const imageUrl = `.public/upload/${req.params}`; // Replace with your logic to fetch the image URL
+    const imageName = req.params.image;
+    const imageUrl = `/public/upload/${imageName}`; // Replace with your logic to fetch the image URL
   
     res.json({ imageUrl });
   });
