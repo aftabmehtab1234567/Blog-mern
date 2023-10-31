@@ -10,7 +10,7 @@ const Header = () => {
     if (image) {console.log(image);
       // Fetch the image URL based on the 'image' data from your context
       // Replace '/api/getImage' with the actual endpoint to fetch the image URL
-      fetch('http://localhost:8000/getImage')
+      fetch('http://localhost:8000/getImage/:image')
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -20,6 +20,7 @@ const Header = () => {
         })
         .then((data) => {
           setImageUrl(data.imageUrl);
+          
         })
         
         .catch((error) => console.error('Error fetching image:', error));
@@ -136,7 +137,7 @@ const Header = () => {
               aria-expanded="false"
             >
            <img
-  src={imageUrl}
+  src={image}
   className="rounded-circle"
   height="25"
   alt="User Avatar"

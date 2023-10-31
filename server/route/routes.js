@@ -12,12 +12,13 @@ router.get('/Projects', verifyToken);
 
 router.post('/signup', upload.single('file'), handleAction);
 router.post('/login', handleAction1);
-router.get('/getImage', (req, res) => {
-    
-    const imageName = req.params.image;
-    const imageUrl = `/public/upload/${imageName}`; // Replace with your logic to fetch the image URL
-  
-    res.json({ imageUrl });
-  });
+router.get('/getImage/:image', (req, res) => {
+  const imageName = req.params.image;
+  const imageUrl = `.public/upload/${imageName}`; // Replace with your logic to fetch the image URL
+
+  // Send the image URL as a response
+  res.json({ imageUrl });
+});
+
   
 export default router;
