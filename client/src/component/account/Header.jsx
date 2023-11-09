@@ -3,29 +3,10 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Context/Contextprovider';
 
 const Header = () => {
-  const { image } = useContext(AuthContext);
-  const [imageUrl, setImageUrl] = useState('');
+  const { Account, setAccount } = useContext(AuthContext);
+  const [tokenUrl, setTokenUrl] = useState(/* Replace with your 'token' value */ '');
 
-  useEffect(() => {
-    if (image) {console.log(image);
-      // Fetch the image URL based on the 'image' data from your context
-      // Replace '/api/getImage' with the actual endpoint to fetch the image URL
-      fetch('http://localhost:8000/getImage/:image')
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-       
-        })
-        .then((data) => {
-          setImageUrl(data.imageUrl);
-          
-        })
-        
-        .catch((error) => console.error('Error fetching image:', error));
-    }
-  }, [image]); // Only fetch the image when 'image' changes
+  console.log(Account);
 
   const handleLogout = () => {
     // Remove the JWT token from localStorage
@@ -77,7 +58,7 @@ const Header = () => {
             </li>
             <li className="nav-item">
               <Link to="/Projects" className="nav-link">
-                Projects
+                Projects 
               </Link>
             </li>
           </ul>
@@ -137,7 +118,7 @@ const Header = () => {
               aria-expanded="false"
             >
            <img
-  src={image}
+  src={`/public/upload/${Account}`}
   className="rounded-circle"
   height="25"
   alt="User Avatar"

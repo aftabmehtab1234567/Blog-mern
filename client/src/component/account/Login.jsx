@@ -1,9 +1,44 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState ,useEffect} from 'react';
 import { signup, login } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/Contextprovider';
 export default function Login() {
   const navigate=useNavigate();
+  const [userData, setAccount] = useState(null);
+  const [token, setToken] = useState(null);
+  const { isAuthenticated } = useContext(AuthContext);
+
+  useEffect(() => {
+    const codedToken = document.cookie;
+    const token=codedToken.split('=')[1]
+
+    if (token) {
+      fetch('http://localhost:8000/token-data', {
+        method: 'GET',
+        headers: { 
+          'authorization': `Bearer ${token}`, 
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            navigate('/Header')
+            return response.json();
+          } else {
+            navigate('/login')
+            throw new Error('Token verification failed');
+          }
+        })
+        .then(data => {
+          setAccount(data.user); 
+        })
+        .catch(error => {
+          console.error('User data retrieval error:', error);
+        });
+    }else{
+      navigate('/login')
+    }
+  }, []);
+
   const [formData, setFormData] = useState({
     email: '',
     username: '',
@@ -12,7 +47,6 @@ export default function Login() {
   });
 
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
-  const {setImage}=useContext(AuthContext)
 
 
   const handleChange = (e) => {
@@ -30,6 +64,7 @@ export default function Login() {
 
   
   const handleActions = async () => {
+
     try {
       if (isCreatingAccount) {
         await signup(formData);
@@ -37,15 +72,18 @@ export default function Login() {
       } else {
         // Perform login without checking the token
         const response = await login(formData);
-        console.log(response);
-        setImage(response.data.user.image)
-        const token = response.data.token;
-        console.log(token);
-        // Set the JWT token in localStorage
-        localStorage.setItem('JWT', token);
+        setAccount(response.data)
+        setToken( response.data.token)
+      
+        document.cookie=`jwt=${response.data.token}; expires=1h;path=/ `
+        const codedToken = document.cookie;
+        const token = codedToken.split("=")[1];
+        console.log("token", token);
   
-        // Navigate to the 'Projects' page
+        if(token){
+          
         navigate('/Projects');
+        }
       }
     } catch (error) {
       console.error('API call error:', error);

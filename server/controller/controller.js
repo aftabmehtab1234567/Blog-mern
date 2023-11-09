@@ -19,7 +19,7 @@ export const upload = multer({ storage: storage });
 
 // const uploadAsync = util.promisify(upload.single('file'));
 
-export async function handleAction(req, res) {
+export async function handleAction(req, res) {console.log(req.body);
   try {
     const { username, password, email } = req.body;
     
@@ -69,16 +69,18 @@ export async function handleAction1(req, res) {
     res.header('Access-Control-Allow-Credentials', true);
 
     // Set the token as a cookie with httpOnly and maxAge options
-    res.cookie('token', token, { httpOnly: true, maxAge: 360000 });
+    res.cookie('token', token, { httpOnly: true, maxAge: 604800000, path: '/', domain: 'yourdomain.com' });
+
 
     // Include the image in the user data
     const userData = {
       _id: user._id,
       email: user.email,
       // Add other user properties you want to include
-      image: user.image, // Assuming user.image is the image URL
+      image: user.image,
+       
     };
-
+  console.log(userData);
     // Send the token and user data in the response
     res.status(200).json({ token, user: userData });
 
@@ -87,4 +89,5 @@ export async function handleAction1(req, res) {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+
 
